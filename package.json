@@ -18,6 +18,8 @@
     ]
   },
   "dependencies": {
+    "@danmarshall/deckgl-typings": "^4.9.5",
+    "deck.gl": "^8.5.8",
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2"
