@@ -4,6 +4,9 @@ interface LatLngParams {
 }
 
 export class LatLng {
+  static default(): LatLng {
+    return new LatLng({ latitude: 0, longitude: 0 });
+  }
   constructor(private params: LatLngParams) {}
 
   get latitude(): number {
