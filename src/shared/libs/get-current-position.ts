@@ -1,5 +1,5 @@
-import { LatLng } from '../../../shared/models/latlng/lat-lng';
-import { CurrentPosition } from '../../../shared/models/current-position/current-position';
+import { LatLng } from '../models/latlng/lat-lng';
+import { CurrentPosition } from '../models/current-position/current-position';
 
 export const getCurrentPosition = (): Promise<CurrentPosition> => {
   return new Promise((resolve, reject) => {
