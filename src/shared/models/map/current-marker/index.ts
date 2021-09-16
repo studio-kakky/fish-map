@@ -1,9 +1,9 @@
-import { LatLng } from '../../latlng/lat-lng';
 import { IconLayer } from '@deck.gl/layers';
 import { v4 as uuidV4 } from 'uuid';
+import { CurrentPosition } from '../../current-position/current-position';
 
 interface IconParams {
-  latLng: LatLng;
+  position: CurrentPosition;
 }
 const baseParams = {
   iconAtlas: '/assets/marker-icons/navigation.svg',
@@ -15,28 +15,29 @@ const baseParams = {
 };
 
 export class CurrentLocationMarker {
-  private layer_: IconLayer<IconParams>;
+  private layer_: IconLayer<CurrentPosition>;
   private layerId: string;
 
-  constructor(private position_: LatLng = LatLng.default()) {
+  constructor(private position_: CurrentPosition) {
     this.layerId = `currentLocationMarker${uuidV4()}`;
-    this.layer_ = new IconLayer<IconParams>({
-      data: [{ latLng: position_ }],
+    this.layer_ = new IconLayer<CurrentPosition>({
+      data: [{ ...position_ }],
       id: this.layerId,
-      getPosition: (data) => [data.latLng.longitude, data.latLng.latitude],
+      getPosition: (data) => [data.location.longitude, data.location.latitude],
+      getAngle: (data) => data.heading,
       ...baseParams,
     });
   }
 
-  get position(): LatLng {
+  get position(): CurrentPosition {
     return this.position_;
   }
 
-  get layer(): IconLayer<IconParams> {
+  get layer(): IconLayer<CurrentPosition> {
     return this.layer_;
   }
 
-  changeLocation(currentLocation: LatLng): CurrentLocationMarker {
-    return new CurrentLocationMarker(currentLocation);
+  changePositions(position: CurrentPosition): CurrentLocationMarker {
+    return new CurrentLocationMarker(position);
   }
 }
