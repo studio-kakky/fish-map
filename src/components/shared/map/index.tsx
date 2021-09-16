@@ -2,18 +2,13 @@ import DeckGL from '@deck.gl/react';
 import { StaticMap } from 'react-map-gl';
 import { MapboxOptions } from 'mapbox-gl';
 
-const INITIAL_VIEW_STATE = {
-  longitude: 139.6399642,
-  latitude: 35.4119603,
-  zoom: 13,
-  pitch: 0,
-  bearing: 0,
-};
+import { INITIAL_VIEW_STATE } from '../../../shared/constants/map-initial-view';
+
 const options = {
   style: 'mapbox://styles/mapbox/dark-v10',
 } as MapboxOptions;
 
-export default function Map(): JSX.Element {
+const Container = (): JSX.Element => {
   return (
     <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true}>
       <StaticMap
@@ -23,4 +18,8 @@ export default function Map(): JSX.Element {
       />
     </DeckGL>
   );
+};
+
+export default function Map() {
+  return Container();
 }
