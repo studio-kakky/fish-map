@@ -12,7 +12,7 @@ export default function HomeContainer(): JSX.Element {
     getCurrentPosition().then((position) => {
       setCurrent(position);
     });
-  }, [current]);
+  }, []);
   return (
     <Layout>
       <Map current={current} />
