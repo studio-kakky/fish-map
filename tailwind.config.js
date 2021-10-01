@@ -5,6 +5,9 @@ module.exports = {
     fontFamily: {
       sans: ["'M PLUS 1p'"],
     },
+    left: {
+      200: '200%',
+    },
     extends: {},
   },
   variants: {
