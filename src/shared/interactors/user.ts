@@ -6,6 +6,8 @@ import {
   UserCredential,
   GoogleAuthProvider,
   signInWithRedirect,
+  User,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -33,8 +35,29 @@ class UserInteractor {
     return await createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  async signUpByGoogle() {
-    signInWithRedirect(this.auth, this.googleAuthProvider);
+  signInWithGoogle(): Promise<never> {
+    return signInWithRedirect(this.auth, this.googleAuthProvider);
+  }
+
+  getUser(): Promise<User | null> {
+    return new Promise((resolve) =>
+      onAuthStateChanged(this.auth, (user) => {
+        if (!user) {
+          resolve(null);
+          return;
+        }
+
+        resolve(user);
+      })
+    );
+  }
+
+  isLoggedIn(): Promise<boolean> {
+    return this.getUser().then((user) => !!user);
+  }
+
+  async signOut(): Promise<void> {
+    await this.auth.signOut();
   }
 }
 

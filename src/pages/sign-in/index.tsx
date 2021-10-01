@@ -1,28 +1,55 @@
 import { NextPage } from 'next';
-import Link from 'next/link';
+import Image from 'next/image';
+
+import { userInteractor } from '../../shared/interactors/user';
+import { useEffect, useState } from 'react';
+
+interface LoginProps {
+  isLoggedIn: boolean | undefined;
+  signInWithGoogle: () => Promise<never>;
+  signOut: () => Promise<void>;
+}
+
+const Login = (props: LoginProps): JSX.Element => {
+  if (props.isLoggedIn === undefined) {
+    return <></>;
+  }
+
+  if (props.isLoggedIn) {
+    return <button onClick={() => props.signOut()}>サインアウト</button>;
+  }
+
+  return (
+    <button className='mt-4' onClick={() => props.signInWithGoogle()}>
+      <Image src='/assets/img/btn_google_signin_dark_normal_web@2x.png' width='200' height='50' />
+    </button>
+  );
+};
 
 const SignIn: NextPage = (): JSX.Element => {
+  const [isLoggedIn, setLoggedIn] = useState<boolean>();
+  useEffect(() => {
+    userInteractor.isLoggedIn().then((res) => {
+      setLoggedIn(res);
+    });
+  }, []);
+
+  const signInWithGoogle = (): Promise<never> => {
+    return userInteractor.signInWithGoogle();
+  };
+
+  const signOut = async (): Promise<void> => {
+    await userInteractor.signOut();
+    setLoggedIn(false);
+  };
+
   return (
     <>
       <div className='absolute top-1/2 -translate-y-1/2 flex flex-col w-full items-center '>
-        <h2 className='font-bold text-2xl'>ログイン</h2>
-        <input
-          className='border border-grey-800 rounded-md py-1 px-2 w-4/6 mt-3'
-          type='text'
-          placeholder='id'
-        />
-        <input
-          className='border border-grey-800 rounded-md py-1 px-2 w-4/6 mt-2'
-          type='password'
-          placeholder='password'
-        />
-        <button className='bg-blue-600 rounded-md text-white w-32 py-2 mt-4'>ログイン</button>
-        <Link href='/sign-up'>
-          <a className='text-sm text-blue-500 flex items-center mt-2'>
-            <span className='material-icons leading-4 text-sm'>arrow_forward_ios</span>
-            <span className='underline'>アカウントを持ってない場合はこちら</span>
-          </a>
-        </Link>
+        <h2 className='font-bold text-2xl'>
+          <Image src='/assets/img/logo.svg' width='200' height='50' />
+        </h2>
+        <Login isLoggedIn={isLoggedIn} signInWithGoogle={signInWithGoogle} signOut={signOut} />
       </div>
     </>
   );
