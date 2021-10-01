@@ -1,7 +1,20 @@
 import { NextPage } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyDtCuNEhKssmoUwgZvruZz96c7fw23AqJ8',
+  authDomain: 'fish-and-maps.firebaseapp.com',
+  projectId: 'fish-and-maps',
+  storageBucket: 'fish-and-maps.appspot.com',
+  messagingSenderId: '536965466000',
+  appId: '1:536965466000:web:2e75a63900f26f7b3d5515',
+  measurementId: 'G-VN41LTLB1F',
+};
+
+const app = initializeApp(firebaseConfig);
 
 enum Step {
   MailAddress,
@@ -12,6 +25,13 @@ const SignIn: NextPage = (): JSX.Element => {
   const [step, setStep] = useState<Step>(Step.MailAddress);
   const [mailAddress, setMailAddress] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const createUser = () => {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, mailAddress, password).then((res) => {
+      console.log(res);
+    });
+  };
 
   return (
     <>
@@ -37,12 +57,22 @@ const SignIn: NextPage = (): JSX.Element => {
           onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           placeholder='password'
         />
-        <button
-          className='bg-blue-600 rounded-md text-white w-32 py-2 mt-4 absolute top-20'
-          onClick={() => setStep(Step.Password)}
-        >
-          次へ
-        </button>
+        {step === Step.MailAddress ? (
+          <button
+            className='bg-blue-600 rounded-md text-white w-32 py-2 mt-4 absolute top-20'
+            onClick={() => setStep(Step.Password)}
+          >
+            次へ
+          </button>
+        ) : (
+          <button
+            className='bg-blue-600 rounded-md text-white w-32 py-2 mt-4 absolute top-20'
+            onClick={createUser}
+          >
+            サインアップ
+          </button>
+        )}
+
         <Link href='/sign-in'>
           <a className='text-sm text-blue-500 flex items-center mt-2  absolute top-32'>
             <span className='material-icons leading-4 text-sm'>arrow_forward_ios</span>
