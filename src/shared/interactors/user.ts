@@ -5,6 +5,7 @@ import {
   getAuth,
   UserCredential,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   signInWithRedirect,
   User,
   onAuthStateChanged,
@@ -23,12 +24,10 @@ const firebaseConfig = {
 class UserInteractor {
   private readonly app: FirebaseApp;
   private readonly auth: Auth;
-  private readonly googleAuthProvider: GoogleAuthProvider;
 
   constructor() {
     this.app = initializeApp(firebaseConfig);
     this.auth = getAuth(this.app);
-    this.googleAuthProvider = new GoogleAuthProvider();
   }
 
   async createUser(email: string, password: string): Promise<UserCredential> {
@@ -36,7 +35,11 @@ class UserInteractor {
   }
 
   signInWithGoogle(): Promise<never> {
-    return signInWithRedirect(this.auth, this.googleAuthProvider);
+    return signInWithRedirect(this.auth, new GoogleAuthProvider());
+  }
+
+  signInWithFacebook(): Promise<never> {
+    return signInWithRedirect(this.auth, new FacebookAuthProvider());
   }
 
   getUser(): Promise<User | null> {

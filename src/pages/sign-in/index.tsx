@@ -1,12 +1,13 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import { userInteractor } from '../../shared/interactors/user';
-import { useEffect, useState } from 'react';
 
 interface LoginProps {
   isLoggedIn: boolean | undefined;
   signInWithGoogle: () => Promise<never>;
+  signInWithFacebook: () => Promise<never>;
   signOut: () => Promise<void>;
 }
 
@@ -20,9 +21,23 @@ const Login = (props: LoginProps): JSX.Element => {
   }
 
   return (
-    <button className='mt-4' onClick={() => props.signInWithGoogle()}>
-      <Image src='/assets/img/btn_google_signin_dark_normal_web@2x.png' width='200' height='50' />
-    </button>
+    <>
+      <button className='mt-4' onClick={() => props.signInWithGoogle()}>
+        <Image
+          src='/assets/img/btn_google_signin_dark_normal_web@2x.png'
+          width='200'
+          height='50'
+          objectFit='contain'
+        />
+      </button>
+      <button
+        onClick={() => props.signInWithFacebook()}
+        className='flex w-48 box-border items-center justify-center bg-fbblue text-white font-bold px-2 py-3 text-sm rounded'
+      >
+        <Image src='/assets/img/f_logo_RGB-Blue_1024.svg' width='20' height='20' />
+        <span className='inline-block ml-2'>Login with Facebook</span>
+      </button>
+    </>
   );
 };
 
@@ -38,6 +53,10 @@ const SignIn: NextPage = (): JSX.Element => {
     return userInteractor.signInWithGoogle();
   };
 
+  const signInWithFacebook = (): Promise<never> => {
+    return userInteractor.signInWithFacebook();
+  };
+
   const signOut = async (): Promise<void> => {
     await userInteractor.signOut();
     setLoggedIn(false);
@@ -49,7 +68,13 @@ const SignIn: NextPage = (): JSX.Element => {
         <h2 className='font-bold text-2xl'>
           <Image src='/assets/img/logo.svg' width='200' height='50' />
         </h2>
-        <Login isLoggedIn={isLoggedIn} signInWithGoogle={signInWithGoogle} signOut={signOut} />
+        <p>以下のサービスでログイン</p>
+        <Login
+          isLoggedIn={isLoggedIn}
+          signInWithGoogle={signInWithGoogle}
+          signOut={signOut}
+          signInWithFacebook={signInWithFacebook}
+        />
       </div>
     </>
   );

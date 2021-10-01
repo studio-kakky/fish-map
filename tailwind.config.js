@@ -5,10 +5,11 @@ module.exports = {
     fontFamily: {
       sans: ["'M PLUS 1p'"],
     },
-    left: {
-      200: '200%',
+    extend: {
+      colors: {
+        fbblue: '#1877f2',
+      },
     },
-    extends: {},
   },
   variants: {
     extend: {},
