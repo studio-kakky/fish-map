@@ -1,20 +1,7 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyDtCuNEhKssmoUwgZvruZz96c7fw23AqJ8',
-  authDomain: 'fish-and-maps.firebaseapp.com',
-  projectId: 'fish-and-maps',
-  storageBucket: 'fish-and-maps.appspot.com',
-  messagingSenderId: '536965466000',
-  appId: '1:536965466000:web:2e75a63900f26f7b3d5515',
-  measurementId: 'G-VN41LTLB1F',
-};
-
-const app = initializeApp(firebaseConfig);
+import { userInteractor } from '../../shared/interactors/user';
 
 enum Step {
   MailAddress,
@@ -26,16 +13,13 @@ const SignIn: NextPage = (): JSX.Element => {
   const [mailAddress, setMailAddress] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const createUser = () => {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, mailAddress, password).then((res) => {
-      console.log(res);
-    });
+  const createUser = async () => {
+    await userInteractor.createUser(mailAddress, password);
   };
 
   return (
     <>
-      <div className='absolute top-1/2 -translate-y-1/2 flex flex-col w-full items-center '>
+      <div className='absolute top-1/2 -translate-y-1/2 flex flex-col w-full h-40 items-center overflow-hidden'>
         <h2 className='font-bold text-2xl'>アカウントの作成</h2>
         <input
           className={`border border-grey-800 rounded-md py-1 px-2 w-4/6 mt-3 absolute top-10 -translate-x-1/2 transition duration-1000 ${
@@ -47,7 +31,7 @@ const SignIn: NextPage = (): JSX.Element => {
           placeholder='メールアドレス'
         />
         <input
-          className={`border border-grey-800 rounded-md py-1 px-2 w-4/6 mt-3 absolute top-10 transition duration-500  ${
+          className={`border border-grey-800 rounded-md py-1 px-2 w-4/6 mt-3 absolute top-10 transition duration-500 ${
             step === Step.Password
               ? 'left-1/2 -translate-x-1/2  opacity-100'
               : 'left-full translate-x-0 opacity-0'
