@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
-
 import Layout from '../../shared/layout';
 import Map from '../../shared/map';
-import { getCurrentPosition } from '../../../shared/libs/get-current-position';
-import { CurrentPosition } from '../../../shared/models/current-position/current-position';
 import FishSelector from '../../shared/fish-selector';
+import { userInteractor } from '../../../shared/interactors/user';
+import { useAtom } from 'jotai';
+import { isLoggedInAtom } from '../../../shared/atoms/auth';
 
 export default function HomeContainer(): JSX.Element {
-  const [current, setCurrent] = useState<CurrentPosition>();
-  useEffect(() => {
-    getCurrentPosition().then((position) => {
-      setCurrent(position);
-    });
-  }, []);
+  const [_, setIsLoggedIn] = useAtom(isLoggedInAtom);
   return (
     <Layout>
-      <Map current={current} />
+      <Map />
       <FishSelector />
+      <button
+        className='fixed bottom-8 left-4 bg-white text-black'
+        onClick={() => userInteractor.signOut().then(() => setIsLoggedIn(() => false))}
+      >
+        ログアウト
+      </button>
     </Layout>
   );
 }
