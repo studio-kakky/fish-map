@@ -28,7 +28,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@danmarshall/deckgl-typings": "^4.9.5",
+    "@danmarshall/deckgl-typings": "^4.9.7",
     "@types/react": "17.0.20",
     "autoprefixer": "^10.3.4",
     "eslint": "7.32.0",
