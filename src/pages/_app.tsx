@@ -1,21 +1,22 @@
 import type { AppProps } from 'next/app';
 import 'tailwindcss/tailwind.css';
-import { useEffect } from 'react';
+import Login from '../components/shared/login';
+import { useEffect, useState } from 'react';
 import { userInteractor } from '../shared/interactors/user';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   useEffect(() => {
-    if (router.pathname === '/sign-in') {
-      return;
-    }
-
     userInteractor.isLoggedIn().then((v) => {
-      if (!v) {
-        router.replace('/sign-in');
-      }
+      setIsLoggedIn(v);
     });
   }, [router.pathname]);
 
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Component {...pageProps} />
+      <Login isLoggedIn={isLoggedIn} />
+    </>
+  );
 }
 export default MyApp;
