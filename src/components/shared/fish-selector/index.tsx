@@ -13,7 +13,7 @@ const Component = (
   onClickToggle: () => void
 ): JSX.Element => {
   return (
-    <div className='fixed w-full overflow-hidden'>
+    <div className='w-full overflow-hidden'>
       <button
         className='flex align-middle justify-center w-full bg-white bg-opacity-60'
         onClick={onClickToggle}
@@ -62,7 +62,7 @@ export default function FishSelector(): JSX.Element {
   const mainItems = makeViewModels(fishTypes.slice(0, 3));
   const subItems = makeViewModels(fishTypes.slice(3, -1));
 
-  const [isOpened, setIsOpened] = useState(true);
+  const [isOpened, setIsOpened] = useState(false);
 
   const onClickToggle = () => {
     setIsOpened(!isOpened);
