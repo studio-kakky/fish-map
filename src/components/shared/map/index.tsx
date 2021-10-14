@@ -17,13 +17,15 @@ interface MapComponentProps {
 const Component = (props: MapComponentProps): JSX.Element => {
   const layers = props.current ? [new CurrentLocationMarker(props.current).layer] : [];
   return (
-    <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={layers}>
-      <StaticMap
-        mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        reuseMaps={true}
-        mapOptions={options}
-      />
-    </DeckGL>
+    <div>
+      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={layers}>
+        <StaticMap
+          mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          reuseMaps={true}
+          mapOptions={options}
+        />
+      </DeckGL>
+    </div>
   );
 };
 

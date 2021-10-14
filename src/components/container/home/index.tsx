@@ -9,17 +9,16 @@ import { isLoggedInAtom } from '../../../shared/atoms/auth';
 
 export default function HomeContainer(): JSX.Element {
   const [_, setIsLoggedIn] = useAtom(isLoggedInAtom);
-  const [mapHeight, setMapHeight] = useState(0);
+  const [footerHeight, setFooterHeight] = useState(0);
   const fishSelectorRef = createRef<HTMLDivElement>();
   useEffect(() => {
     const boundingBox = fishSelectorRef.current?.getBoundingClientRect();
-    const selectorHeight = boundingBox ? boundingBox.height : 0;
-    setMapHeight(window.innerHeight - selectorHeight);
+    setFooterHeight(boundingBox ? boundingBox.height : 0);
   }, []);
 
   return (
     <Layout>
-      <div className='relative' style={{ height: `${mapHeight}px` }}>
+      <div className='fixed w-full' style={{ height: `calc(100% - ${footerHeight}px)` }}>
         <Map />
       </div>
       <div className='bg-black absolute bottom-0 w-full' ref={fishSelectorRef}>
